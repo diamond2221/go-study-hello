@@ -106,7 +106,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		db.Create(&user)
 		utils.SuccessJsonResponse(w, user)
 	} else {
-		utils.ErrorResponse(w, 400, "用户已存在", nil)
+		utils.ErrorResponse(w, 400, "用户: "+hasUser.Name+",已存在", nil)
 	}
 
 }
