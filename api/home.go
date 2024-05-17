@@ -1,12 +1,10 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"hello/utils"
 	"io"
 	"net/http"
-	"reflect"
 	"strings"
 )
 
@@ -50,10 +48,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	// 获取body请求参数
 	body, err := io.ReadAll(r.Body)
+	// 可以保证在函数返回后关闭Body
 	defer r.Body.Close()
 
-	var reqData map[string]interface{}
-	json.Unmarshal(body, &reqData)
+	reqData := map[string]interface{}{}
+	utils.TransformJson(body, &reqData)
 
 	if reqData["error"] != nil || err != nil {
 		utils.ErrorResponse(w, 400, "请求参数解析失败", reqData["error"])
@@ -67,24 +66,13 @@ func Home(w http.ResponseWriter, r *http.Request) {
 			// }
 			newName = reqData["name"].(string)
 		}
-
-		idListObj := reflect.ValueOf(reqData["idList"])
-		var idList []interface{}
-		if reqData["idList"] != nil {
-			for i := 0; i < idListObj.Len(); i++ {
-				item := idListObj.Index(i).Interface()
-				idList = append(idList, item)
-				if reflect.TypeOf(item).Kind() == reflect.Map {
-					fmt.Println("map", item.(map[string]interface{})["path"])
-				}
-			}
-		}
-
-		fmt.Println(idList)
+		var userIds []interface{} = []interface{}{1, 2, "马云"}
+		utils.TransformInterfaceToArray(reqData["userIds"], &userIds)
 
 		// 将所有参数返回
 		data := map[string]interface{}{
-			"body": reqData,
+			"body":    reqData,
+			"userIds": userIds,
 		}
 
 		if newName != "" {

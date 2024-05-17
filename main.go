@@ -44,13 +44,13 @@ func main() {
 	mValue := u1.Test
 	u.Test()
 	mValue()
-
 	// mCon := (*User).Test
 	// mCon(&u)
 
 	const port = "8080"
-	http.HandleFunc("/api", api.Home)
+	http.HandleFunc("/api/home", api.Home)
 	http.HandleFunc("/api/users", api.UserHandler)
+	http.HandleFunc("/api/func", api.FuncHandler)
 	fmt.Printf("Server is running at: %s%s\n", "http://127.0.0.1:", port)
 	http.ListenAndServe(":"+port, nil)
 }
