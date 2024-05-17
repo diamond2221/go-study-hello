@@ -132,4 +132,18 @@ func init() {
 	fmt.Printf("%v\n", ce)
 	demo(&ce)
 	fmt.Printf("%v\n", ce)
+
+	var a *int = new(int)
+	*a = 100
+
+	b := map[string]string{
+		"name": "wanglaowu",
+	}
+	fmt.Println(b, *a)
+
+	var slice = []int{2, 3, 4, 5, 6, 7, 8}
+
+	slice = append(slice, 99)
+
+	fmt.Println(cap(slice), len(slice), slice)
 }
